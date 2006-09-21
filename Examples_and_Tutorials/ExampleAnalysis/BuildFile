@@ -1,0 +1,40 @@
+<use name=FWCore/Framework>
+<use name=Foundation/PluginManager>
+<use name=FWCore/ParameterSet>
+
+<use name=clhep>
+<use name=root>
+
+<use name=DataFormats/TrajectoryState>
+<use name=DataFormats/EgammaCandidates>
+<use name=DataFormats/HepMCCandidate>
+<use name=DataFormats/EgammaReco>
+<use name=DataFormats/MuonReco>
+<use name=SimDataFormats/HepMCProduct>
+<use name=DataFormats/VertexReco>
+<use name=DataFormats/TrackReco>
+<use name=DataFormats/JetReco>
+<use name=RecoEgamma/EgammaElectronAlgos>
+<use name=DataFormats/TrackingRecHit>
+
+<flags SEAL_PLUGIN_NAME="ExampleAnalysisExampleAnalysis">
+<export>
+   <lib name=ExampleAnalysisExampleAnalysis>
+   <use name=FWCore/Framework>
+   <use name=Foundation/PluginManager>
+   <use name=FWCore/ParameterSet>
+
+   <use name=clhep> 
+   <use name=SimDataFormats/HepMCProduct>
+   <use name=DataFormats/HepMCCandidate>
+   <use name=DataFormats/EgammaCandidates>
+   <use name=DataFormats/TrajectoryState>
+   <use name=DataFormats/EgammaReco>
+   <use name=DataFormats/MuonReco>
+   <use name=DataFormats/VertexReco>
+   <use name=DataFormats/JetReco>
+   <use name=DataFormats/TrackReco>
+   <use name=RecoEgamma/EgammaElectronAlgos>	
+   <use name=DataFormats/TrackingRecHit>
+
+</export>
