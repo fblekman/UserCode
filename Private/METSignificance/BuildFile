@@ -1,0 +1,37 @@
+
+<use name=FWCore/Framework>
+<use name=FWCore/PluginManager>
+<use name=FWCore/ParameterSet>
+<use name=FWCore/ServiceRegistry>
+
+<use name=root>
+<use name=JetMETCorrections/MCJet>
+<use name=TrackingTools/TrackAssociator>
+<use name=RecoMuon/DetLayers>
+<use name=Geometry/Records>
+<use name=Geometry/TrackerGeometryBuilder>
+<use name=clhep>
+<use name=boost>
+<use name=DataFormats/METReco>
+<use name=DataFormats/TrackReco>
+<use name=DataFormats/MuonReco>
+
+<flags EDM_PLUGIN=1>
+<export>
+	<lib name=WenuMETSignificance>
+	<use name=FWCore/Framework>
+	<use name=FWCore/PluginManager>
+	<use name=FWCore/ParameterSet>
+	<use name=FWCore/ServiceRegistry>
+	<use name=root>
+	<use name=JetMETCorrections/MCJet>
+	<use name=TrackingTools/TrackAssociator>
+	<use name=RecoMuon/DetLayers>
+	<use name=Geometry/Records>
+	<use name=Geometry/TrackerGeometryBuilder>
+	<use name=clhep>
+	<use name=boost>
+	<use name=DataFormats/METReco>
+	<use name=DataFormats/TrackReco>
+	<use name=DataFormats/MuonReco>
+</expert>
