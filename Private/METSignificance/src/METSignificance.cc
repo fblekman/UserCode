@@ -31,6 +31,8 @@
 #include "FWCore/Framework/interface/ESHandle.h"
 
 #include "Wenu/METSignificance/interface/METSignificance.h"
+#include "DataFormats/EgammaCandidates/interface/PixelMatchGsfElectron.h"
+#include "DataFormats/EgammaCandidates/interface/PixelMatchGsfElectronFwd.h"
 
 //
 // constants, enums and typedefs
@@ -51,6 +53,8 @@ METSignificance::METSignificance(const edm::ParameterSet& iConfig):
   useElectrons_(true),
   jetPtThreshold_(20.),
   jetEtaThreshold_(3.0),
+  elePtThreshold_(10.),
+  eleEtaThreshold_(3.0),
   muonPtThreshold_(10.),
   muonEtaThreshold_(2.5),
   muonTrackD0Max_(999.0),
@@ -62,7 +66,8 @@ METSignificance::METSignificance(const edm::ParameterSet& iConfig):
   CaloJetAlgorithmTag_( iConfig.getParameter<edm::InputTag>( "CaloJetAlgorithm" ) ),
   CorJetAlgorithmTag_( iConfig.getParameter<edm::InputTag>( "CorJetAlgorithm" ) ), 
   JetCorrectionService_( iConfig.getParameter<std::string>( "JetCorrectionService" ) ), 
-  MuonTag_( iConfig.getParameter<edm::InputTag>("MuonTag") )
+  MuonTag_( iConfig.getParameter<edm::InputTag>("MuonTag") ),
+  ElectronTag_( iConfig.getParameter<edm::InputTag>("ElectronTag"))
   
 {
 
@@ -124,28 +129,23 @@ METSignificance::fillVector(edm::Event& iEvent, const edm::EventSetup & iSetup)
   iSetup.get<TrackerDigiGeometryRecord>().get(trackerGeometryHandle);
   //--------------------------------------------------------------//
 
-
-  // fake electron loop, really additional jets:
-   //--- Calo Jets loop ------------------------------------------------//
-  for( reco::CaloJetCollection::const_iterator cal = caloJets->begin(); 
-       cal != caloJets->end() && useElectrons_; 
-       ++cal ) {
+  edm::Handle<PixelMatchGsfElectronCollection> gsfElectrons;
+ iEvent.getByLabel(ElectronTag_,gsfElectrons);
+ 
+ // electron loop
+ for (reco::PixelMatchGsfElectronCollection::const_iterator ele=gsfElectrons->begin(); ele!=gsfElectrons->end() && useElectrons_; ++ele){
   //-- Use min Pt cut of 20 Gev from MET note AN-2007/041 --//
-    if (cal->pt() < jetPtThreshold_) {
+    if (ele->pt() < elePtThreshold_) {
       continue; 
     }
-    if(fabs(cal->eta())>jetEtaThreshold_)
+    if(fabs(ele->eta())>eleEtaThreshold_)
       continue; 
 
-    // TO BE REPLACED WITH REAL ELECTRON LOOP
-    if(cal->emEnergyFraction() <0.9)
-      continue;
-    //- Set Spreads: NOTE these values are COMPLETELY arbitrary for now!!!!! -//
-    tmp_sigma_e = eleUncertainty.etUncertainty->Eval(cal->et());
-    tmp_sigma_phi = eleUncertainty.phiUncertainty->Eval(cal->et());
+    tmp_sigma_e = eleUncertainty.etUncertainty->Eval(ele->et());
+    tmp_sigma_phi = eleUncertainty.phiUncertainty->Eval(ele->et());
 
     //-- Set up input for Significance Calculation --//
-    metsig::SigInputObj* tmp_electron = new metsig::SigInputObj("electron",cal->et(),cal->phi(),tmp_sigma_e,tmp_sigma_phi);
+    metsig::SigInputObj* tmp_electron = new metsig::SigInputObj("electron",ele->et(),ele->phi(),tmp_sigma_e,tmp_sigma_phi);
     physobjvector_.push_back(tmp_electron);
   }
   
@@ -253,7 +253,7 @@ METSignificance::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
   double met_y = calo_met_total * sin(calo_met_phi);
 
   // now book a missing et object:
-  if(significance<0){
+  if(significance>0){
     std::cout << "strange significance " << significance << " " << calo_met_total << " " <<  calo_met_phi << " " <<  calo_met_set << " " << met_x << " " << met_y << std::endl;
   }  
   math::XYZTLorentzVector p4( met_x, met_y, 0.0, calo_met_total);
@@ -285,8 +285,10 @@ METSignificance::setUncertaintyParameters(){
   jetUncertainty.phiUncertainty->SetParameter(0,2.635*(3.14159/180.));
   
   // completely ambiguious values for electron-like jets...
+  // the egamma group keeps track of these here:
+  // https://twiki.cern.ch/twiki/bin/view/CMS/EgammaCMSSWVal
   eleUncertainty.etUncertainty = new TF1("eleEtFunc","[0] * x",1);
-  eleUncertainty.etUncertainty->SetParameter(0,0.01); // arbitrary variables from Kyle's code
+  eleUncertainty.etUncertainty->SetParameter(0,0.034); // electron resolution in energy is around 3.4%, measured for 10 < pT < 50 at realistic events with pile-up.
   eleUncertainty.phiUncertainty = new TF1("elePhiFunc","[0] * x",1);
   eleUncertainty.phiUncertainty->SetParameter(0,1*(3.14159/180.));
 

@@ -86,6 +86,10 @@ class METSignificance : public edm::EDProducer {
   
   float jetPtThreshold_;
   float jetEtaThreshold_;
+  
+  float elePtThreshold_;
+  float eleEtaThreshold_;
+
   float muonPtThreshold_;
   float muonEtaThreshold_;
   float muonTrackD0Max_;

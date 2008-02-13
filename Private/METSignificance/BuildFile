@@ -15,7 +15,7 @@
 <use name=DataFormats/METReco>
 <use name=DataFormats/TrackReco>
 <use name=DataFormats/MuonReco>
-
+<use name=DataFormats/EgammaCandidates>
 <flags EDM_PLUGIN=1>
 <export>
 	<lib name=WenuMETSignificance>
