@@ -1,0 +1,222 @@
+// -*- C++ -*-
+//
+// Package:    PATMissingHTSignificanceProducer
+// Class:      PATMissingHTSignificanceProducer
+// 
+/**\class PATMissingHTSignificanceProducer PATMissingHTSignificanceProducer.cc myana/PATMissingHTSignificanceProducer/src/PATMissingHTSignificanceProducer.cc
+
+ Description: <one line class summary>
+
+ Implementation:
+     <Notes on implementation>
+*/
+//
+// Original Author:  Freya Blekman
+//         Created:  Tue Apr 22 20:14:24 CEST 2008
+// $Id$
+//
+//
+
+
+// system include files
+#include <memory>
+
+// user include files
+#include "FWCore/Framework/interface/Frameworkfwd.h"
+#include "FWCore/Framework/interface/EDProducer.h"
+
+#include "FWCore/Framework/interface/Event.h"
+#include "FWCore/Framework/interface/MakerMacros.h"
+
+#include "FWCore/ParameterSet/interface/ParameterSet.h"
+#include "FWCore/ParameterSet/interface/InputTag.h"
+
+#include "DataFormats/PatCandidates/interface/Muon.h"
+#include "DataFormats/PatCandidates/interface/Jet.h"
+#include "DataFormats/PatCandidates/interface/Electron.h"
+#include "DataFormats/PatCandidates/interface/Tau.h"
+#include "DataFormats/PatCandidates/interface/Photon.h"
+#include "DataFormats/PatCandidates/interface/MET.h"
+
+#include "RecoMET/METAlgorithms/interface/SigInputObj.h"
+#include "RecoMET/METAlgorithms/interface/significanceAlgo.h"
+
+//
+// class decleration
+//
+
+class PATMissingHTSignificanceProducer : public edm::EDProducer {
+   public:
+      explicit PATMissingHTSignificanceProducer(const edm::ParameterSet&);
+      ~PATMissingHTSignificanceProducer();
+
+   private:
+      virtual void beginJob(const edm::EventSetup&) ;
+      virtual void produce(edm::Event&, const edm::EventSetup&);
+      virtual void endJob() ;
+      
+      // ----------member data --------------------------- 
+  edm::InputTag eleLabel_;
+  edm::InputTag muoLabel_;
+  edm::InputTag jetLabel_;
+  edm::InputTag tauLabel_;
+  edm::InputTag metLabel_;
+  edm::InputTag phoLabel_;
+  std::string significanceLabel_;
+};
+
+//
+// constants, enums and typedefs
+//
+
+//
+// static data member definitions
+//
+
+//
+// constructors and destructor
+//
+PATMissingHTSignificanceProducer::PATMissingHTSignificanceProducer(const edm::ParameterSet& iConfig) : 
+  significanceLabel_("PATMissingHTSignificance"),  
+  eleLabel_(iConfig.getUntrackedParameter<edm::InputTag>("electronTag")),
+  muoLabel_(iConfig.getUntrackedParameter<edm::InputTag>("muonTag")),
+  jetLabel_(iConfig.getUntrackedParameter<edm::InputTag>("jetTag")),
+  tauLabel_(iConfig.getUntrackedParameter<edm::InputTag>("tauTag")),
+  metLabel_(iConfig.getUntrackedParameter<edm::InputTag>("metTag")),
+  phoLabel_(iConfig.getUntrackedParameter<edm::InputTag>("photonTag"))
+{
+   //register your products
+
+  produces<double>() .setBranchAlias(significanceLabel_.c_str());
+  produces<pat::MET>() .setBranchAlias(significanceLabel_.c_str());
+   //now do what ever other initialization is needed
+
+}
+
+
+PATMissingHTSignificanceProducer::~PATMissingHTSignificanceProducer()
+{
+ 
+   // do anything here that needs to be done at desctruction time
+   // (e.g. close files, deallocate resources etc.)
+
+}
+
+
+//
+// member functions
+//
+
+// ------------ method called to produce the data  ------------
+void
+PATMissingHTSignificanceProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
+{
+   
+   edm::Handle<std::vector<pat::Muon> > muonHandle;
+   iEvent.getByLabel(muoLabel_,muonHandle);
+   std::vector<pat::Muon> muons = *muonHandle;
+   
+   edm::Handle<std::vector<pat::Jet> > jetHandle;
+   iEvent.getByLabel(jetLabel_,jetHandle);
+   std::vector<pat::Jet> jets = *jetHandle;
+
+   edm::Handle<std::vector<pat::Electron> > electronHandle;
+   iEvent.getByLabel(eleLabel_,electronHandle);
+   std::vector<pat::Electron> electrons = *electronHandle;
+
+   edm::Handle<std::vector<pat::MET> > metHandle;
+   iEvent.getByLabel(metLabel_,metHandle);
+   std::vector<pat::MET> mets = *metHandle;
+
+   edm::Handle<std::vector<pat::Photon> > phoHandle;
+   iEvent.getByLabel(phoLabel_,phoHandle);
+   std::vector<pat::Photon> photons = *phoHandle;
+   
+   edm::Handle<std::vector<pat::Tau> > tauHandle;
+   iEvent.getByLabel(tauLabel_,tauHandle);
+   std::vector<pat::Tau> taus = *tauHandle;
+
+   // this is the worker class for the MET significance.
+   std::vector<metsig::SigInputObj> signInputVec;
+   double phi_val,phi_err,et_val,et_err;
+   std::string type="unknown";
+   // loop over jets.
+   for(std::vector<pat::Jet>::const_iterator jet_iter = jets.begin(); jet_iter!=jets.end(); ++jet_iter){
+     phi_err = jet_iter->resolutionPhi();
+     et_err=jet_iter->resolutionEt();
+     phi_val=jet_iter->phi();
+     et_val=jet_iter->et();
+     type="jet";
+     std::cout << type <<", pT:" <<  et_val << "+/-" << et_err << ", phi:" << phi_val << "+/-" << phi_err << std::endl;
+     metsig::SigInputObj tempjet(type,et_val,phi_val,et_err,phi_err);
+     signInputVec.push_back(tempjet);
+     
+   }
+   // loop over electrons.
+   for(std::vector<pat::Electron>::const_iterator electron_iter = electrons.begin(); electron_iter!=electrons.end(); ++electron_iter){
+     
+     phi_err = electron_iter->resolutionPhi();
+     et_err=electron_iter->resolutionEt();
+     phi_val=electron_iter->phi();
+     et_val=electron_iter->et();
+     type="electron";
+     std::cout << type <<", pT:" <<  et_val << "+/-" << et_err << ", phi:" << phi_val << "+/-" << phi_err << std::endl;
+     metsig::SigInputObj tempelectron(type,et_val,phi_val,et_err,phi_err);
+     signInputVec.push_back(tempelectron);
+   }
+   // loop over photons.
+   for(std::vector<pat::Photon>::const_iterator photon_iter = photons.begin(); photon_iter!=photons.end(); ++photon_iter){
+     phi_err = photon_iter->resolutionPhi();
+     et_err=photon_iter->resolutionEt();
+     phi_val=photon_iter->phi();
+     et_val=photon_iter->et();
+     type="photon";
+     std::cout << type <<", pT:" <<  et_val << "+/-" << et_err << ", phi:" << phi_val << "+/-" << phi_err << std::endl;
+     metsig::SigInputObj tempphoton(type,et_val,phi_val,et_err,phi_err);
+     signInputVec.push_back(tempphoton);
+   }
+   // loop over muons.
+   for(std::vector<pat::Muon>::const_iterator muon_iter = muons.begin(); muon_iter!=muons.end(); ++muon_iter){
+     phi_err = muon_iter->resolutionPhi();
+     et_err=muon_iter->resolutionEt();
+     phi_val=muon_iter->phi();
+     et_val=muon_iter->et();
+     type="muon";
+     std::cout << type <<", pT:" <<  et_val << "+/-" << et_err << ", phi:" << phi_val << "+/-" << phi_err << std::endl;
+     metsig::SigInputObj tempmuon(type,et_val,phi_val,et_err,phi_err); 
+     signInputVec.push_back(tempmuon);
+   }  
+   // loop over taus.
+   for(std::vector<pat::Tau>::const_iterator tau_iter = taus.begin(); tau_iter!=taus.end(); ++tau_iter){
+     phi_err = tau_iter->resolutionPhi();
+     et_err=tau_iter->resolutionEt();
+     phi_val=tau_iter->phi();
+     et_val=tau_iter->et();
+     type="tau";
+     std::cout << type <<", pT:" <<  et_val << "+/-" << et_err << ", phi:" << phi_val << "+/-" << phi_err << std::endl;
+     metsig::SigInputObj temptau(type,et_val,phi_val,et_err,phi_err); 
+     signInputVec.push_back(temptau);
+   }
+   
+   // now calculate the object:
+   double sign_scalar_et;
+   double sign_met_phi;
+   double sign_met;
+   double significance = metsig::ASignificance(signInputVec,sign_met,sign_met_phi,sign_scalar_et);
+   std::cout << "now done with HT Calculation: mHT:" << sign_met << ",HT:" << sign_scalar_et << ", phi:" << sign_met_phi << ", mHTSignificance:" << significance << std::endl;
+
+}
+
+// ------------ method called once each job just before starting event loop  ------------
+void 
+PATMissingHTSignificanceProducer::beginJob(const edm::EventSetup&)
+{
+}
+
+// ------------ method called once each job just after ending the event loop  ------------
+void 
+PATMissingHTSignificanceProducer::endJob() {
+}
+
+//define this as a plug-in
+DEFINE_FWK_MODULE(PATMissingHTSignificanceProducer);

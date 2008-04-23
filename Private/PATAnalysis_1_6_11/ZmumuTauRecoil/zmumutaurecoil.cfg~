@@ -1,0 +1,21 @@
+process Demo =  {
+  
+source = PoolSource 
+{ 
+     # replace 'myfile.root' with the source file you want to use
+	untracked vstring fileNames = {"file:PATLayer1_Output.fromAOD_full.root"
+	}
+}
+
+#keep the logging output to a nice level
+service = MessageLogger {}
+
+module demo = ZmumuTauRecoil { 
+}
+  service = TFileService {
+	string fileName = "histo.root"
+ }
+
+path p = {demo} 
+
+}
