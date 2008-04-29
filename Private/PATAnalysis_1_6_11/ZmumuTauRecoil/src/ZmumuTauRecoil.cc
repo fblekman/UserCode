@@ -245,11 +245,11 @@ ZmumuTauRecoil::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
      float taucuts3[6]={0.12,0.14,0.45,6.,1.,2.};//Rm, Rs, Ri, pTltrCut, pTiCut,dZtr
      for(size_t ii=0; ii<5; ii++)
        passedtautags[ii]=0;
+     ntaus=ngoodtaus=nmatchedtaus=0;
      for (reco::IsolatedTauTagInfoCollection::const_iterator itau = tauTagInfoHandle->begin(); itau != tauTagInfoHandle->end(); ++itau) {
        
        ntaus++;
        const reco::CaloJet* cj = dynamic_cast<reco::CaloJet*>( const_cast<reco::Jet*>( itau->jet().get() ) );
-       tlv.SetXYZT(0,0,0,0);
        TLorentzVector recoTauJet(itau->jet()->px(), itau->jet()->py(),itau->jet()->pz(),itau->jet()->energy());
        histos_["hist_tauPt_precut"]->Fill(recoTauJet.Pt());
        histos_["hist_tauEta_precut"]->Fill(recoTauJet.Eta());
@@ -258,12 +258,17 @@ ZmumuTauRecoil::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        histos_["hist_tauPt_postcut"]->Fill(recoTauJet.Pt());
        histos_["hist_tauEta_postcut"]->Fill(recoTauJet.Eta());
        ngoodtaus++;
-       if(recoTauJet.DeltaR(bestjet)>tauDeltaRcut)
+       if(recoTauJet.Pt()==0)
+	 continue;
+       else if(recoTauJet.DeltaR(bestjet)>tauDeltaRcut)
+	 continue;
+       else if(tlv.Pt()==0)
+	 tlv=recoTauJet;
+       else if(tlv.DeltaR(bestjet)>recoTauJet.DeltaR(bestjet))
+	 tlv=recoTauJet;
+       else
 	 continue;
        nmatchedtaus++;
-       histos_["hist_tauPt_postmatch"]->Fill(recoTauJet.Pt());
-       histos_["hist_tauEta_postmatch"]->Fill(recoTauJet.Eta());
-       tlv=recoTauJet;
        passedtautags[0]=1;
        if(itau->discriminator())
 	 passedtautags[1]=1;
