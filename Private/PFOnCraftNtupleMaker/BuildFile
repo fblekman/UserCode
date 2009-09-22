@@ -1,0 +1,26 @@
+<use name=FWCore/Framework>
+<use name=FWCore/PluginManager>
+<use name=FWCore/ParameterSet>
+<use name=PhysicsTools/UtilAlgos>
+<use name=FWCore/ServiceRegistry>
+<use name=DataFormats/TrackReco>
+<use name=DataFormats/Math>
+<use name=DataFormats/ParticleFlowCandidate>
+<use name=RecoParticleFlow/PFAnalyses>
+
+<use name=root>
+<flags EDM_PLUGIN=1>
+<export>
+   	<lib name=PrivatePFOnCraftNtupleMaker>
+   	<use name=FWCore/Framework>
+   	<use name=FWCore/PluginManager>
+   	<use name=FWCore/ParameterSet>
+	<use name=PhysicsTools/UtilAlgos>
+	<use name=FWCore/ServiceRegistry>
+	<use name=DataFormats/TrackReco>
+	<use name=DataFormats/Math>
+	<use name=DataFormats/ParticleFlowCandidate>
+	<use name=RecoParticleFlow/PFAnalyses>
+	<use name=root>
+</export>
+	
