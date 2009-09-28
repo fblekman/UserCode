@@ -1,0 +1,68 @@
+% CVS info. These are modified by cvs at checkout time.
+% The last version of these macros found before the maketitle will be the one on the front page,
+% so only the main file is tracked.
+% Edit by hand with care!
+\RCS$Revision: 1.7 $
+\RCS$Date: 2009/05/12 19:20:52 $
+\RCS$Name:  $
+%%%%%%%%%%%%% ptdr definitions %%%%%%%%%%%%%%%%%%%%%
+\input{ptdr-definitions}
+%%%%%%%%%%%%%%%  Title page %%%%%%%%%%%%%%%%%%%%%%%%
+% [Not required for PAS notes -- derived from directory name.] Please replace 2006/000 with your note number in the following line:
+\cmsNoteHeader{XXX-09-YYYY}
+\title{Charge calibration of the CMS pixel detector}% Force line breaks with \\
+
+\address[unkno]{unknown}
+\address[neu]{Universiteit Antwerpen}
+\address[cu]{Cornell University}
+\author[cu]{Freya Blekman}
+\author[ua]{Romain Rougny}
+\author[unkno]{A. Cern Person}
+%\author{The CMS Collaboration}
+
+% please supply the date in yyyy/mm/dd format. Today has been
+% redefined to do so, but it should be fixed as of the final release date.
+\date{\today}
+
+% note that you cannot use \verb in the abstract text
+\abstract{
+This note is intended as documentation on pixel charge calibrations at the start of LHC data taking.
+}
+
+% these need to be filled in by hand and should (MUST) match the info
+% in the TeX equivalents less the TeX markup
+\hypersetup{%
+pdfauthor={CMS Collaboration},%
+pdftitle={Test PAS Paper},%
+pdfsubject={CMS},%
+pdfkeywords={CMS, physics, software, computing}}
+\maketitle %maketitle comes after all the front information has been supplied
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  Begin text %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+Freya
+\section{Technical Implementation}
+\subsection{Data collection}
+What is the raw data format - how is it collected at P5
+Freya
+\subsection{Analysis code}
+How is the raw data processed (analysis flow)
+Freya
+\subsection{Analysis output}
+What is the output of the analysis
+Romain
+\subsection{Databases}
+How do we store the information in the DB? what format/granularity is used? 
+Romain
+\subsection{Implementation in CMSSW reconstruction}
+How does the reconstruction use this information? And in which stage?
+Freya
+\section{Some results}
+Show some 'good/bad' plots, the CRAFT09 before/after calibration plots come to mind
+Romain
+\section{Conclusion}
+Freya
+
+\bibliography{auto_generated}   % will be created by the tdr script.
+\clearpage
+\appendix
