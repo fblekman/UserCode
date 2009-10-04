@@ -7,6 +7,10 @@
 <use name=DataFormats/Math>
 <use name=DataFormats/ParticleFlowCandidate>
 <use name=RecoParticleFlow/PFAnalyses>
+<use name=TrackingTools/TrackAssociator>
+<use name=TrackingTools/MaterialEffects>
+<use name=MagneticField/Records>
+<use name=MagneticField/Engine>
 
 <use name=root>
 <flags EDM_PLUGIN=1>
@@ -21,6 +25,11 @@
 	<use name=DataFormats/Math>
 	<use name=DataFormats/ParticleFlowCandidate>
 	<use name=RecoParticleFlow/PFAnalyses>
+	<use name=TrackingTools/TrackAssociator>
+	<use name=TrackingTools/MaterialEffects>
+	<use name=MagneticField/Records>
+	<use name=MagneticField/Engine>
+
 	<use name=root>
 </export>
 	
