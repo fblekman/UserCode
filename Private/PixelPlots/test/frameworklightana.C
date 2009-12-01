@@ -39,7 +39,7 @@ void frameworklightana(void){
   //  pixelhistory->SetTitleX("number of hit pixels per detector");
   //  pixelhistory->SetTitleY("number of events next hit in same detid");
   
-  std::map<uint64_t,uint64_t> hitmap;
+  std::map<uint32_t,std::pair<uint64_t,uint32_t> > hitmap;
   size_t iev=0;
   size_t ii,jj,kk;
 
@@ -59,12 +59,19 @@ void frameworklightana(void){
       uint32_t detid = digiIter->id;
       edm::DetSet<PixelDigi>::const_iterator ipix; // ITERATOR OVER DIGI DATA  
       
+      std::pair<uint64_t,uint32_t> pixelpair(iev,0);
       for(ipix = digiIter->data.begin(); ipix!=digiIter->end(); ++ipix){
 	std::cout << detid << " " << ipix->adc() << " " << ipix->row() << " " << ipix->column() << std::endl;
-	    
+	pixelpair.second++;
+	
       }
-    }
-    
+      if(pixelpair.second>0){
+	std::cout << pixelpair.second << " " << pixelpair.first << " " << hitmap[detid].second << " " << hitmap[detid].first << std::endl;
+	if(hitmap[detid].second>0)
+	  pixelhistory->Fill(hitmap[detid].second,pixelpair.first-hitmap[detid].first);
+	hitmap[detid]=pixelpair;
+      }
+    }// end of digi loop
   }// end of event loop
 
   TCanvas *canv  = new TCanvas();
