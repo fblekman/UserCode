@@ -23,6 +23,9 @@
 #include "DataFormats/METReco/interface/CaloMETCollection.h"
 #include "DataFormats/METReco/interface/CaloMET.h"
 #include "DataFormats/METReco/interface/MET.h" 
+#include "DataFormats/TrackReco/interface/Track.h"
+#include "DataFormats/TrackReco/interface/TrackBase.h"
+#include "DataFormats/TrackReco/interface/TrackFwd.h"
 #include "DataFormats/Candidate/interface/Candidate.h"
 #include "FWCore/Framework/interface/TriggerNames.h"
 #include "DataFormats/Common/interface/TriggerResults.h"
@@ -46,6 +49,7 @@ void makeplot_fwlite(){
   }
   badeventlist.close();
  
+  std::vector<uint64_t> badruns;
  // good runs:
   std::vector<uint64_t> goodruns;
   // got these from Artur
@@ -87,8 +91,9 @@ void makeplot_fwlite(){
 
   fwlite::Handle<L1GlobalTriggerReadoutRecord>  handle_techbits;
   fwlite::Handle<std::vector<reco::CaloMET> > handle_mets;
+  fwlite::Handle<std::vector<reco::Track> > handle_tracks;
   fwlite::Handle<std::vector<reco::Vertex> > handle_vtxs;
-  std::vector<reco::Vertex> vtxs;
+
 
   TFile *outputfile = new TFile("outputhistos.root","recreate");
   outputfile->cd();
@@ -99,6 +104,10 @@ void makeplot_fwlite(){
   TH1D *h_vtx_ndof = new TH1D("h_vtx_ndof","",100,0,100);
   h_vtx_ndof->SetXTitle("PV ndof");
   h_vtx_ndof->SetYTitle("events");
+
+  TH1D *h_fractrackgood = new TH1D("h_fractrackgood","",100,0,1);
+  h_fractrackgood->SetXTitle("#frac{good tracks}{all tracks}");
+  h_fractrackgood->SetYTitle("events/0.01");
 
   TH1D *h_met = new TH1D("h_met","",100,0,10);
   h_met->SetXTitle("missing E_{T} (GeV)");
@@ -133,23 +142,36 @@ void makeplot_fwlite(){
 
   littletree->Branch("met",&container,"met/F:sig/F:phi/F:sumEt/F:runnum/I");
 
+  double trackfrac;
   size_t iev=0;
-  size_t nevmax=-1;
+  size_t nevmax=-1;//100000;
+  size_t repeat=100;
   size_t ii,jj,kk;
   std::pair<uint64_t,uint64_t> currentevent;
-
+  bool ismc;
+  reco::TrackBase::TrackQuality QUALITY= reco::TrackBase::qualityByName("highPurity");
   for( ev.toBegin();
        ! ev.atEnd() && (iev<nevmax || nevmax<1);
        ++ev) {
     iev++;
     
-    if(iev%100==0)
+    if(iev%repeat==0)
       std::cout << iev << " - run " <<ev.id().run()<< ", evt " << ev.id().event() <<  std::endl;
+    if(iev/repeat>10 && repeat < 100000)
+      repeat*=10;
 
-    if( std::find(goodruns.begin(),goodruns.end(),ev.id().run())==goodruns.end() && ev.id().run()>100){
-     std::cout << "run " << ev.id().run() << " is not in good run list" << std::endl;
-     continue;
+    if(ev.id().run()>100){
+      ismc=false;
+      if( std::find(goodruns.begin(),goodruns.end(),ev.id().run())==goodruns.end() ){
+	if(std::find(badruns.begin(),badruns.end(),ev.id().run())==badruns.end() ){
+	  badruns.push_back(ev.id().run());
+	  std::cout << "run " << ev.id().run() << " is not in good run list" << std::endl;
+	}
+	continue;
+      }
     }
+    else
+      ismc=true;
     // and check for bad events:
     currentevent.first=ev.id().run();
     currentevent.second=ev.id().event();
@@ -165,7 +187,16 @@ void makeplot_fwlite(){
     //    std::cout << handle_techbits.ptr()->technicalTriggerWord().at(0) << std::endl;
     
     // make sure bit 0 is on.
-    if(handle_techbits.ptr()->technicalTriggerWord().at(0)==0)
+    if(handle_techbits.ptr()->technicalTriggerWord().at(0)==0 && !ismc)
+      continue;
+    // and the beam halo bits are off...
+    if(handle_techbits.ptr()->technicalTriggerWord().at(36)==1 && !ismc)
+      continue;
+    if(handle_techbits.ptr()->technicalTriggerWord().at(37)==1 && !ismc)
+      continue;
+    if(handle_techbits.ptr()->technicalTriggerWord().at(38)==1 && !ismc)
+      continue;
+    if(handle_techbits.ptr()->technicalTriggerWord().at(39)==1 && !ismc)
       continue;
 
     //    for(int ttr=0; ttr<50; ttr++)
@@ -176,6 +207,7 @@ void makeplot_fwlite(){
     if(handle_vtxs.ptr()->size()<1)
       continue;
     
+
     std::vector<reco::Vertex>::const_iterator vtxs = handle_vtxs.ptr()->begin();
     std::vector<reco::CaloMET>::const_iterator mets = handle_mets.ptr()->begin();
     
@@ -191,6 +223,19 @@ void makeplot_fwlite(){
     h_vtx_ndof->Fill(vtxs->ndof());
     if(vtxs->ndof()<5)
       continue;
+    
+    trackfrac=0;
+    for(std::vector<reco::Track>::const_iterator trk=handle_tracks.ptr()->begin(); trk!=handle_tracks.ptr()->end(); ++trk){
+      if(trk->quality(QUALITY))
+	trackfrac++;
+    }
+
+    std::cout << trackfrac << "/"  << handle_tracks.ptr()->size() <<std::endl;
+    trackfrac/=(double)handle_tracks.ptr()->size();
+    h_fractrackgood->Fill(trackfrac);
+    if(trackfrac<0.25 && handle_tracks.ptr()->size()>=10)
+      continue;
+
     container.met=mets->et();
     container.sig=mets->significance();
     container.sumEt=mets->sumEt();
