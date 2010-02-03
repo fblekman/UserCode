@@ -19,7 +19,7 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 process.load('Configuration.EventContent.EventContent_cff')
 
 process.configurationMetadata = cms.untracked.PSet(
-    version = cms.untracked.string('$Revision: 1.156 $'),
+    version = cms.untracked.string('$Revision: 1.1 $'),
     annotation = cms.untracked.string('FREYACONFIGDATA nevts:1'),
     name = cms.untracked.string('PyReleaseValidation')
 )
@@ -76,7 +76,7 @@ process.TFileService = cms.Service("TFileService",
 # Output definition
 process.output = cms.OutputModule("PoolOutputModule",
     splitLevel = cms.untracked.int32(0),
-    outputCommands = cms.untracked.vstring( "drop *","keep *_*_*_METSIGNIF","keep *_gtDigis_*_*","keep *_ParticleFlow_*_*","keep *_offlinePrimaryVerticesWithBS_*_*","keep *_offlinePrimaryVertices_*_*"),
+    outputCommands = cms.untracked.vstring("drop *","keep *_*_*_METSIGNIF","keep *_gtDigis_*_*","keep *_particleFlow_*_*","keep *_offlinePrimaryVertices_*_*","keep *_generalTracks_*_*"),
 
 #    process.RECOSIMEventContent.outputCommands,
     fileName = cms.untracked.string('FREYACONFIGDATA_RECO.root'),
