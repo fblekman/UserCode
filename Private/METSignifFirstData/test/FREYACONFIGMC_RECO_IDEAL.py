@@ -19,7 +19,7 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 process.load('Configuration.EventContent.EventContent_cff')
 
 process.configurationMetadata = cms.untracked.PSet(
-    version = cms.untracked.string('$Revision: 1.1 $'),
+    version = cms.untracked.string('$Revision: 1.2 $'),
     annotation = cms.untracked.string('FREYACONFIGDATA nevts:1'),
     name = cms.untracked.string('PyReleaseValidation')
 )
@@ -57,7 +57,7 @@ process.options = cms.untracked.PSet(
 # Input source
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-    '/store/data/BeamCommissioning09/MinimumBias/RAW-RECO/BSCNOBEAMHALO-Jan23Skim-v1/0015/FA138089-F809-DF11-ADAD-002618943945.root'
+    '/store/mc/Summer09/MinBias/GEN-SIM-RECO/STARTUP3X_V8P_900GeV-v1/0011/FC9DC27A-060A-DF11-88E7-001CC47D01BA.root'
     )
 )
 
@@ -89,13 +89,13 @@ process.output = cms.OutputModule("PoolOutputModule",
 # Additional output definition
 
 # Other statements
-process.GlobalTag.globaltag = 'STARTUP3X_V13:All'
+process.GlobalTag.globaltag = 'START3X_V16C::All'
 #process.GlobalTag.globaltag = 'GR09_R_34X_V3::All'
 
 
 # Path and EndPath definitions
 process.reconstruction_step = cms.Path(process.reconstruction)
-process.metreco_step = cms.Path(process.metsignifntup1+process.ecalDigis+process.ecalPreshowerDigis+process.hcalDigis+process.calolocalreco+process.caloTowersRec+process.metreco+process.recoPFMET+process.metsignifntup2)
+process.metreco_step = cms.Path(process.caloTowersRec+process.metreco+process.recoPFMET+process.metsignifntup2)
 process.endjob_step = cms.Path(process.endOfProcess)
 process.out_step = cms.EndPath(process.output)
 

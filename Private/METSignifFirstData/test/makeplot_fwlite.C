@@ -183,21 +183,22 @@ void makeplot_fwlite(){
     handle_techbits.getByLabel(ev,"gtDigis");
     handle_mets.getByLabel(ev,"met");
     handle_vtxs.getByLabel(ev,"offlinePrimaryVertices");
-     
+    handle_tracks.getByLabel(ev,"generalTracks");
+   
     //    std::cout << handle_techbits.ptr()->technicalTriggerWord().at(0) << std::endl;
     
     // make sure bit 0 is on.
     if(handle_techbits.ptr()->technicalTriggerWord().at(0)==0 && !ismc)
       continue;
     // and the beam halo bits are off...
-    if(handle_techbits.ptr()->technicalTriggerWord().at(36)==1 && !ismc)
-      continue;
-    if(handle_techbits.ptr()->technicalTriggerWord().at(37)==1 && !ismc)
-      continue;
-    if(handle_techbits.ptr()->technicalTriggerWord().at(38)==1 && !ismc)
-      continue;
-    if(handle_techbits.ptr()->technicalTriggerWord().at(39)==1 && !ismc)
-      continue;
+//    if(handle_techbits.ptr()->technicalTriggerWord().at(36)==1 && !ismc)
+//      continue;
+//    if(handle_techbits.ptr()->technicalTriggerWord().at(37)==1 && !ismc)
+//      continue;
+//    if(handle_techbits.ptr()->technicalTriggerWord().at(38)==1 && !ismc)
+//      continue;
+//    if(handle_techbits.ptr()->technicalTriggerWord().at(39)==1 && !ismc)
+//      continue;
 
     //    for(int ttr=0; ttr<50; ttr++)
     //      std::cout << handle_techbits.ptr()->technicalTriggerWord().at(ttr) << ",";
@@ -230,8 +231,9 @@ void makeplot_fwlite(){
 	trackfrac++;
     }
 
-    std::cout << trackfrac << "/"  << handle_tracks.ptr()->size() <<std::endl;
-    trackfrac/=(double)handle_tracks.ptr()->size();
+//    std::cout << trackfrac << "/"  << handle_tracks.ptr()->size() <<std::endl;
+    if(handle_tracks.ptr()->size()>0)
+       trackfrac/=(double)handle_tracks.ptr()->size();
     h_fractrackgood->Fill(trackfrac);
     if(trackfrac<0.25 && handle_tracks.ptr()->size()>=10)
       continue;

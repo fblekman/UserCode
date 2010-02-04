@@ -9,4 +9,5 @@
   gSystem->CompileMacro("makeplot_fwlite.C","k");
 
   makeplot_fwlite();
+  gSystem->Exit(1);
 }
