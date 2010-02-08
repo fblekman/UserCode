@@ -192,14 +192,19 @@ void makeplot_fwlite(){
     if(handle_techbits.ptr()->technicalTriggerWord().at(0)==0 && !ismc)
       continue;
     // and the beam halo bits are off...
-//    if(handle_techbits.ptr()->technicalTriggerWord().at(36)==1 && !ismc)
-//      continue;
-//    if(handle_techbits.ptr()->technicalTriggerWord().at(37)==1 && !ismc)
-//      continue;
-//    if(handle_techbits.ptr()->technicalTriggerWord().at(38)==1 && !ismc)
-//      continue;
-//    if(handle_techbits.ptr()->technicalTriggerWord().at(39)==1 && !ismc)
-//      continue;
+    if(handle_techbits.ptr()->technicalTriggerWord().at(36)==1 && !ismc)
+      continue;
+    if(handle_techbits.ptr()->technicalTriggerWord().at(37)==1 && !ismc)
+      continue;
+    if(handle_techbits.ptr()->technicalTriggerWord().at(38)==1 && !ismc)
+      continue;
+    if(handle_techbits.ptr()->technicalTriggerWord().at(39)==1 && !ismc)
+      continue;
+    
+    // check that bits 40 or 41 are on...
+    if(handle_techbits.ptr()->technicalTriggerWord().at(40)==0 && 
+       handle_techbits.ptr()->technicalTriggerWord().at(41)==0)
+      continue;
 
     //    for(int ttr=0; ttr<50; ttr++)
     //      std::cout << handle_techbits.ptr()->technicalTriggerWord().at(ttr) << ",";

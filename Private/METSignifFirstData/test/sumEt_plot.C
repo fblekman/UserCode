@@ -9,17 +9,20 @@
   TH1D *hist1 = new TH1D("hist1","CMS at #sqrt{s}=900 GeV",100,0,100);
   hist1->SetXTitle("#Sigma E_{T} (GeV)");
   hist1->SetYTitle("events / 1 GeV");
-  hist1->SetLineWidth(2);
   TH1D *hist2 = (TH1D*) hist1->Clone("hist2");
-  hist1->SetMarkerStyle(22);
-  hist1->SetMarkerSize(1.5*hist1->GetMarkerSize());
+  hist1->SetLineWidth(2);
+  hist1->SetMarkerStyle(20);
+  hist1->SetMarkerSize(1.1*hist1->GetMarkerSize());
   hist1->Sumw2();
   hist1->SetLineColor(1);
   hist2->SetLineColor(2);
+  hist2->SetFillColor(hist2->GetLineColor());
+  hist2->SetFillStyle(1001);
   
-  chdata->Draw("met.sumEt>>hist1","","goff");
-  chmc->Draw("met.sumEt>>hist2","","goff");
-  //  scaler = hist1->GetMaximum()/hist2->GetMaximum();
+  chdata->Draw("met.sumEt>>hist1","met.sumEt<100","goff");
+  chmc->Draw("met.sumEt>>hist2","met.sumEt<100","goff");
+  //  scaler = hist1->GetEntries()/hist2->GetEntries();
+  scaler = hist1->GetMaximum()/hist2->GetMaximum();
   hist2->Scale(scaler);
   TCanvas *c1 = new TCanvas();
   c1->cd();
@@ -39,5 +42,11 @@
   c1->Print("sumEt_CMSSW341_900GeV.pdf");
   c1->Print("sumEt_CMSSW341_900GeV.jpg");
 
+  TCanvas *canv = new TCanvas();
+  canv->cd();
+  TH1D *ratio = (TH1D*) hist1->Clone("ratio");
+  ratio->Divide(hist2);
+  ratio->SetYTitle("data/MC");
+  ratio->Draw();
   
 }
