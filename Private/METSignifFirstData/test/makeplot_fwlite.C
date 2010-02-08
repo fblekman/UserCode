@@ -137,10 +137,11 @@ void makeplot_fwlite(){
     Float_t phi;
     Float_t sumEt;
     Int_t runnum;
+    Int_t evnum;
   };
   stuff container;
 
-  littletree->Branch("met",&container,"met/F:sig/F:phi/F:sumEt/F:runnum/I");
+  littletree->Branch("met",&container,"met/F:sig/F:phi/F:sumEt/F:runnum/I:evnum/I");
 
   double trackfrac;
   size_t iev=0;
@@ -243,6 +244,7 @@ void makeplot_fwlite(){
     container.sumEt=mets->sumEt();
     container.phi=mets->phi();
     container.runnum=ev.id().run();
+    container.evnum=ev.id().event();
     littletree->Fill();
     h_met->Fill(mets->et());
     h_metsignif->Fill(mets->significance());
