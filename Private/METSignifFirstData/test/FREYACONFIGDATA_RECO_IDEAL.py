@@ -19,7 +19,7 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 process.load('Configuration.EventContent.EventContent_cff')
 
 process.configurationMetadata = cms.untracked.PSet(
-    version = cms.untracked.string('$Revision: 1.2 $'),
+    version = cms.untracked.string('$Revision: 1.3 $'),
     annotation = cms.untracked.string('FREYACONFIGDATA nevts:1'),
     name = cms.untracked.string('PyReleaseValidation')
 )
@@ -61,16 +61,11 @@ process.source = cms.Source("PoolSource",
     )
 )
 
-process.metsignifntup1 = cms.EDAnalyzer('METSignifFirstData'
-)
-process.metsignifntup2 = cms.EDAnalyzer('METSignifFirstData'
-)
 
-
-process.TFileService = cms.Service("TFileService",
-								   fileName = cms.string("histo.root"),
-								   closeFileFast = cms.untracked.bool(True)
-								   )
+#process.TFileService = cms.Service("TFileService",
+#								   fileName = cms.string("histo.root"),
+#								   closeFileFast = cms.untracked.bool(True)
+#								   )
 				
 
 # Output definition
@@ -90,8 +85,8 @@ process.output = cms.OutputModule("PoolOutputModule",
 
 # Other statements
 #process.GlobalTag.globaltag = 'IDEAL_34X:All'
-process.GlobalTag.globaltag = 'GR09_R_34X_V3::All'
-
+# GT for 342 data reprocessing.
+process.GlobalTag.globaltag = 'GR09_R_34X_V5::All'
 
 # Path and EndPath definitions
 process.reconstruction_step = cms.Path(process.reconstruction)

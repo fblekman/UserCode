@@ -19,7 +19,7 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 process.load('Configuration.EventContent.EventContent_cff')
 
 process.configurationMetadata = cms.untracked.PSet(
-    version = cms.untracked.string('$Revision: 1.3 $'),
+    version = cms.untracked.string('$Revision: 1.4 $'),
     annotation = cms.untracked.string('FREYACONFIGDATA nevts:1'),
     name = cms.untracked.string('PyReleaseValidation')
 )
@@ -95,7 +95,7 @@ process.GlobalTag.globaltag = 'START3X_V16C::All'
 
 # Path and EndPath definitions
 process.reconstruction_step = cms.Path(process.reconstruction)
-process.metreco_step = cms.Path(process.caloTowersRec+process.metreco+process.recoPFMET)
+process.metreco_step = cms.Path(process.RawToDigi+process.calolocalreco+process.caloTowersRec+process.metreco+process.recoPFMET)
 process.endjob_step = cms.Path(process.endOfProcess)
 process.out_step = cms.EndPath(process.output)
 
