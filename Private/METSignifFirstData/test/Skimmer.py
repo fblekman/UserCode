@@ -23,7 +23,7 @@ process.load('Configuration/StandardSequences/AlCaRecoStreams_cff')
 process.load('Configuration/EventContent/AlCaRecoOutput_cff')
 
 process.configurationMetadata = cms.untracked.PSet(
-    version = cms.untracked.string('$Revision: 1.3 $'),
+    version = cms.untracked.string('$Revision: 1.4 $'),
     annotation = cms.untracked.string('rereco nevts:100'),
     name = cms.untracked.string('PyReleaseValidation')
 )
@@ -149,7 +149,7 @@ process.FEVT = cms.OutputModule("PoolOutputModule",
 																	   "keep *_pfMet_*_*","keep *_offlinePrimaryVertices_*_*",
 																	   "keep *_impactParameterTagInfos_*_*","keep *_pixelVertices_*_*",
 																	   "keep *_generalV0Candidates_*_*"),
-    fileName = cms.untracked.string('/tmp/fblekman/_DATA_withNewMETandGTdigis.root'),
+    fileName = cms.untracked.string('SKIMMED_DATA-small.root'),
     dataset = cms.untracked.PSet(
         dataTier = cms.untracked.string('RECO'),
         filterName = cms.untracked.string('')

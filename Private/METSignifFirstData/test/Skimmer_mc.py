@@ -1,4 +1,4 @@
-# Auto generated configuration file
+#
 # using: 
 # Revision: 1.149 
 # Source: /cvs_server/repositories/CMSSW/CMSSW/Configuration/PyReleaseValidation/python/ConfigBuilder.py,v 
@@ -23,13 +23,13 @@ process.load('Configuration/StandardSequences/AlCaRecoStreams_cff')
 process.load('Configuration/EventContent/AlCaRecoOutput_cff')
 
 process.configurationMetadata = cms.untracked.PSet(
-    version = cms.untracked.string('$Revision: 1.9 $'),
+    version = cms.untracked.string('$Revision: 1.4 $'),
     annotation = cms.untracked.string('rereco nevts:100'),
     name = cms.untracked.string('PyReleaseValidation')
 )
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(100)
-)
+    input = cms.untracked.int32(-1)
+	)
 process.options = cms.untracked.PSet(
     Rethrow = cms.untracked.vstring('ProductNotFound'),
     wantSummary = cms.untracked.bool(True) 
@@ -37,15 +37,101 @@ process.options = cms.untracked.PSet(
 # Input source
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-	'rfio:/castor/cern.ch/cms//store/data/BeamCommissioning09/MinimumBias/RAW-RECO/BSCNOBEAMHALO-Feb9Skim_v1/0028/06740CEA-D316-DF11-9198-003048679164.root'
-#'/store/data/BeamCommissioning09/MinimumBias/RAW/v1/000/124/120/DC0FA50D-6BE8-DE11-8A92-000423D94E70.root'
-#'file:/data/withvertex732.root'
-#'/store/express/BeamCommissioning09/ExpressPhysics/FEVT/v2/000/123/615/38379AF1-B4E2-DE11-BB10-001617C3B706.root'
-#'rfio:/castor.cern.ch/cms/store/data/BeamCommissioning09/castor/MinimumBias/RAW/v1/000/122/314/CC89C4BC-DE11-B365-0030487D0D3A.root'
+       '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/FED831D5-F03B-DF11-9C75-0030487D05B0.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/FED078E6-E63B-DF11-B17F-001D09F24763.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/FE290C8E-F83B-DF11-8C7D-001D09F2423B.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/FE28014B-E83B-DF11-9B06-001D09F24493.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/FCDF1B49-E83B-DF11-B789-001D09F2841C.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/FC7EB40D-F63B-DF11-8DFA-001D09F24EE3.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/FC2A72FC-E83B-DF11-AFE2-001D09F2432B.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/FC263E7C-F63B-DF11-B2E5-001D09F26509.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/FAF4FC91-EC3B-DF11-9E16-001D09F24664.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/FA9CAE79-F13B-DF11-A70B-001D09F251BD.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/FA0AF7DF-F23B-DF11-A48B-000423D9863C.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/F8171699-EC3B-DF11-B21C-001D09F28EC1.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/F6A93EE4-F23B-DF11-B0B3-001D09F24691.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/F64F0B1D-F73B-DF11-9535-000423D98B5C.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/F489FD08-FA3B-DF11-BB79-001D09F251CC.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/F2823533-FB3B-DF11-9CDA-000423D98AF0.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/F2348807-FA3B-DF11-B296-001D09F2924F.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/F030FEF3-ED3B-DF11-824C-000423D9989E.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/EE6BC8C3-F73B-DF11-8265-000423D99EEE.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/ECE1B065-EF3B-DF11-A910-001D09F28E80.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/ECA4C56A-EA3B-DF11-AF13-001D09F23A3E.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/EC911185-F13B-DF11-AC24-001D09F28F1B.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/EC632C91-F83B-DF11-A0E6-001D09F25208.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/EAA75F3C-FB3B-DF11-A7E8-001D09F251CC.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/EA83F1FE-E83B-DF11-A804-001D09F24EE3.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/EA0FD15F-EF3B-DF11-B32C-001D09F29114.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/E88F90C6-EB3B-DF11-9703-001D09F231C9.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/E885D5E3-F23B-DF11-9608-000423D986A8.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/E8759D1F-F53B-DF11-B39D-001D09F24EAC.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/E6BCCD7B-F63B-DF11-BC39-000423D6CA6E.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/E68EB53A-FB3B-DF11-8007-001D09F24682.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/E667695F-EF3B-DF11-8A0F-000423D991F0.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/E65B1BFC-E83B-DF11-9686-001D09F28EA3.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/E6407E33-FB3B-DF11-A9DB-0030487CD6E6.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/E623F945-F93B-DF11-B532-000423D6CAF2.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/E4CF833C-FB3B-DF11-8248-001D09F29524.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/E496D7FC-E83B-DF11-A7D1-001D09F24DDF.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/E43EF52D-ED3B-DF11-861E-001D09F2B30B.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/E4311843-F93B-DF11-B640-000423D9870C.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/E2D4F81A-EB3B-DF11-9AF8-001D09F2424A.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/E0DE7DAD-E93B-DF11-90B0-001D09F24691.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/E0C2B3E6-E63B-DF11-9623-001D09F2527B.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/E0A64036-F43B-DF11-B031-001D09F29533.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/E06B2608-F03B-DF11-AF3E-000423D999CA.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/E0592D2F-ED3B-DF11-98B0-001D09F252F3.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/DEA5480D-FA3B-DF11-A3B8-001D09F291D7.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/DE7A5F96-F33B-DF11-BB50-000423D6BA18.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/DE65B86A-EA3B-DF11-A290-001D09F251BD.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/DE568531-ED3B-DF11-B491-001D09F29597.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/DE5320FF-F53B-DF11-A816-0030487C8CB8.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/DCDAD660-EF3B-DF11-8EA1-001D09F24DA8.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/DCC7B2AC-E93B-DF11-9FD0-001D09F28D54.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/DC5B897B-F63B-DF11-8353-001617E30CD4.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/DACCE280-F13B-DF11-8678-000423D9517C.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/D8D58E37-D4632331-F23B-DF11-9EED-000423D6B48C.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/D43107C7-EB3B-DF11-8043-0015C5FDE067.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/D40DD232-ED3B-DF11-B229-0019B9F72BAA.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/D2F0F3B3-F03B-DF11-A360-001D09F27003.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/D2B0BA81-F13B-DF11-9B65-001D09F295FB.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/D2B04463-EA3B-DF11-8C1C-000423D99F1E.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/D27D619A-EC3B-DF11-83ng10/ExpressPhysics/FEVT/v7/000/132/440/D2037809-FA3B-DF11-A821-001D09F2527B.root',
+	          '/storning10/ExpressPhysics/FEVT/v7/000/132/440/BA4106FF-F53B-DF11-BDB0-0019B9F709A4.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/BA0C4C6A-E83B-DF11-97E3-001D09F2512C.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/B81E8A81-F13B-DF11-BA9B-001D09F28EA3.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/B6F76493-EC3B-DF11-ACFA-001D09F253C0.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/B6674D6A-EA3B-DF11-899F-001D09F231C9.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/B661C0BE-E73B-DF11-9048-000423D98AF0.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/B60DFCAA-FA3B-DF11-880E-000423D174FE.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/B4FF1BE9-F23B-DF11-92FF-001D09F25456.root',
+	          '/store/express/Commissioning10/ExpressPhysics/FEVT/v7/000/132/440/B4BB7EC2-EB3B-DF11-9653-001D09F2A690.root'
     )
 )
 
-process.source.inputCommands = cms.untracked.vstring("keep *", "drop *_MEtoEDMConverter_*_*", "drop L1GlobalTriggerObjectMapRecord_hltL1GtObjectMap__HLT")
+			
+#process.source.lumisToProcess = cms.untracked.VLuminosityBlockRange(
+#   '123596:2-123596:9999',    
+#   '123615:70-123615:9999',   
+#   '123732:62-123732:9999',  
+#   '123815:8-123815:9999',   
+#   '123818:2-123818:42',     
+#   '123908:2-123908:12',     
+#   '124008:1-124008:1',      
+#   '124009:1-124009:68',     
+#   '124020:12-124020:94',     
+#   '124022:66-124022:179',    
+#   '124023:38-124023:9999',   
+#   '124024:2-124024:83',     
+#   '124025:5-124025:13',    
+#   '124027:24-124027:9999',   
+#   '124030:2-124030:9999',  
+#   '124120:1-124120:9999',   
+#   '124275:3-124275:30'
+#   )
+
+#process.source.inputCommands = cms.untracked.vstring("keep *", "drop *_MEtoEDMConverter_*_*", "drop L1GlobalTriggerObjectMapRecord_hltL1GtObjectMap__HLT")
 
 # Output definition
 process.FEVT = cms.OutputModule("PoolOutputModule",
@@ -64,8 +150,7 @@ process.FEVT = cms.OutputModule("PoolOutputModule",
 																	   "keep *_impactParameterTagInfos_*_*","keep *_pixelVertices_*_*",
 																	   "keep *_generalV0Candidates_*_*",
 																	   # additional MC info:
-																	   "keep *_generator_*_*","keep *_genParticles_*_*"
-																	   ),
+																	   "keep *_generator_*_*","keep *_genParticles_*_*"),
     fileName = cms.untracked.string('SKIMMED_MC_withNewMETandGTdigis.root'),
     dataset = cms.untracked.PSet(
         dataTier = cms.untracked.string('RECO'),
@@ -74,9 +159,24 @@ process.FEVT = cms.OutputModule("PoolOutputModule",
 )
 
 
+# Include UserDefinedBit0 in HcalSeverityLevelComputer
+process.hcalRecAlgos.SeverityLevels.append(cms.PSet(RecHitFlags = cms.vstring('UserDefinedBit0'),
+                                                    ChannelStatus = cms.vstring(''),
+                                                    Level = cms.int32(9998)))
+
+# HF RecHit re-flagger
+process.load("RecoLocalCalo.HcalRecAlgos.hcalrechitreflagger_cfi")
+process.hfrecoReflagged = process.hcalrechitReflagger.clone()
+#process.hfrecoReflagged.hf_Algo3test = True  # S9/S1 algorithm (current default)
+#process.hfrecoReflagged.hf_Algo2test = False # PET algorithm
+
+# Use the re-flagged HF RecHits to make the CaloTowers
+process.towerMaker.hfInput = cms.InputTag("hfrecoReflagged")
+process.towerMakerWithHO.hfInput = cms.InputTag("hfrecoReflagged")
+
 
 # Other statements
-process.GlobalTag.globaltag = 'GR09_R_34X_V4::All'
+process.GlobalTag.globaltag = 'START3X_V25B::All'
 
 
 #####################################################################################################
@@ -218,8 +318,12 @@ process.pathALCARECOSiStripCalZeroBias = cms.Path(process.seqALCARECOSiStripCalZ
 process.pathALCARECOTkAlMinBias = cms.Path(process.seqALCARECOTkAlMinBias*process.ALCARECOTkAlMinBiasDQM)
 process.pathALCARECOMuAlOverlaps = cms.Path(process.seqALCARECOMuAlOverlaps*process.ALCARECOMuAlOverlapsDQM)
 
-process.metreco_step = cms.Path(process.caloTowersRec+process.metreco)
+process.reflagging_step = cms.Path(process.hfrecoReflagged)
+process.rereco_step = cms.Path(process.caloTowersRec*(process.recoJets*process.recoJetIds+process.recoTrackJets)*process.recoJetAssociations*process.metreco) # re-
+
+process.metreco_step = cms.Path(process.caloTowersRec+process.metreco+process.pfMet)
 
 # Schedule definition
-process.schedule = cms.Schedule(process.metreco_step,process.endjob_step,process.out_step)
+process.schedule = cms.Schedule(process.reflagging_step,process.rereco_step,process.out_step)
+
                                 #process.reconstruction_step,process.dqmoffline_step,process.pathALCARECOSiStripCalZeroBias,process.pathALCARECOTkAlMinBias,process.pathALCARECOTkAlMuonIsolated,process.pathALCARECOMuAlCalIsolatedMu,process.pathALCARECOMuAlOverlaps,process.pathALCARECOHcalCalIsoTrk,process.pathALCARECOHcalCalDijets,process.endjob_step,process.out_step,process.ALCARECOStreamTkAlMinBiasOutPath,process.ALCARECOStreamTkAlMuonIsolatedOutPath,process.ALCARECOStreamMuAlOverlapsOutPath,process.ALCARECOStreamMuAlCalIsolatedMuOutPath,process.ALCARECOStreamHcalCalIsoTrkOutPath,process.ALCARECOStreamHcalCalDijetsOutPath,process.ALCARECOStreamSiStripCalZeroBiasOutPath)
