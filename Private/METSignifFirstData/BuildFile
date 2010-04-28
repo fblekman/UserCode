@@ -1,7 +1,10 @@
 <use name="DataFormats/L1GlobalTrigger">
 <use name="root">
+<use name="DataFormats/PatCandidates">
 <use name="CommonTools/UtilAlgos">
 <use name="DataFormats/METReco">
+<use name="DataFormats/JetReco">
+<use name="RecoJets/JetAlgorithms">
 <use name="FWCore/Framework">
 <use name="FWCore/ParameterSet">
 <flags EDM_PLUGIN="1">
