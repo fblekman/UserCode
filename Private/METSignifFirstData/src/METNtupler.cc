@@ -13,7 +13,7 @@ Implementation:
 //
 // Original Author:  Freya Blekman,6 R-029,+41227678914,
 //         Created:  Sun Apr 18 22:45:10 CEST 2010
-// $Id: METNtupler.cc,v 1.2 2010/04/28 14:49:31 fblekman Exp $
+// $Id: METNtupler.cc,v 1.3 2010/06/03 09:22:03 fblekman Exp $
 //
 //
 
@@ -63,7 +63,7 @@ Implementation:
 
 #include "TTree.h"
 #include "TH1D.h"
-
+#include "TMath.h"
 
 //
 // class declaration
@@ -97,6 +97,7 @@ private:
     Float_t sig;
     Float_t phi;
     Float_t sumEt;
+    Float_t prob;
   };
   stuff container_;
 
@@ -242,6 +243,7 @@ METNtupler::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     container_.phi=metHandle->front().phi();
     container_.sumEt=metHandle->front().sumEt();
     container_.sig=metHandle->front().significance();
+    container_.prob = TMath::Prob(container_.sig,2);
     numEle=0;
     for(std::vector<pat::Electron>::const_iterator ele_iter = eleHandle->begin(); ele_iter!=eleHandle->end() && numEle<10; ++ele_iter){
       elePt[numEle]=ele_iter->pt();
@@ -312,6 +314,7 @@ METNtupler::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     container_.phi=met->phi();
     container_.sig=met->significance();
     container_.sumEt=met->sumEt();
+    container_.prob = TMath::Prob(container_.sig,2);
     tree_->Fill();
   }//no PF
   if(usePF_){
@@ -323,7 +326,7 @@ METNtupler::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     container_.phi=met->phi();
     container_.sig=met->significance();
     container_.sumEt=met->sumEt();
-    
+    container_.prob = TMath::Prob(container_.sig,2);
     
     Handle<PFCandidateCollection> pfcands;
     iEvent.getByLabel("particleFlow",pfcands);

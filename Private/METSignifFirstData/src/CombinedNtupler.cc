@@ -13,7 +13,7 @@ Implementation:
 //
 // Original Author:  Aleko Khukhunaishvili,6 R-029,+41227678914,
 //         Created:  Thu Apr 15 12:00:05 CEST 2010
-// $Id$
+// $Id: CombinedNtupler.cc,v 1.1 2010/06/03 16:56:21 fblekman Exp $
 //
 //
 
@@ -60,6 +60,7 @@ Implementation:
 #include <TFile.h>
 #include <TH1.h>
 #include <TTree.h>
+#include <TMath.h>
 
 using namespace std;
 using namespace edm;
@@ -102,6 +103,7 @@ struct MET{
   float sig;
   float sumEt;
   float emf;
+  float prob;
 };
 
 struct MHT{
@@ -304,7 +306,7 @@ CombinedNtupler::CombinedNtupler(const edm::ParameterSet& iConfig)
   jetTag_		= iConfig.getParameter<edm::InputTag>("jetTag");
   patJetTag_          = iConfig.getParameter<edm::InputTag>("patJetTag");
   jetIDTag_		= iConfig.getParameter<edm::InputTag>("jetIDTag");
-  jetCorrectorTag_	= iConfig.getUntrackedParameter<string>("jetCorrectorTag");
+  //  jetCorrectorTag_	= iConfig.getUntrackedParameter<string>("jetCorrectorTag");
 
   genjetTag_		= iConfig.getParameter<edm::InputTag>("genjetTag");
 }
@@ -324,7 +326,7 @@ CombinedNtupler::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
   //some initialization to identify if there was such object or not.
   for(int i=0; i<nElectrons; i++) e[i].charge=0;
-  for(int i=0; i<nJets; i++) {calojet[i].e = -1.; genjet[i].e = -1.;patjet[i].e=-1}
+  for(int i=0; i<nJets; i++) {calojet[i].e = -1.; genjet[i].e = -1.;patjet[i].e=-1;}
 
   if(isMC_){
     Handle<GenEventInfoProduct> gi;
@@ -446,7 +448,7 @@ CombinedNtupler::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
   calomet.sig	    = calometiter.significance();
   calomet.sumEt   = calometiter.sumEt();
   calomet.emf     = calometiter.emEtFraction();
-
+  calomet.prob = TMath::Prob(calomet.sig,2);
   //pfmet
   edm::Handle<edm::View<reco::MET> > pfmetHandle;
   iEvent.getByLabel(pfmetTag_,pfmetHandle);
@@ -457,6 +459,7 @@ CombinedNtupler::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
   pfmet.sig	    = pfmetiter.significance();
   pfmet.sumEt     = pfmetiter.sumEt();
   pfmet.emf       = -1.;
+  pfmet.prob = TMath::Prob(pfmet.sig,2);
 
   //tcmet
   edm::Handle<edm::View<reco::MET> > tcmetHandle;
@@ -468,6 +471,7 @@ CombinedNtupler::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
   tcmet.sig	    = tcmetiter.significance();
   tcmet.sumEt     = tcmetiter.sumEt();
   tcmet.emf       = -1.;
+  tcmet.prob = -1;
 
   //calomet old without thresholds
   edm::Handle<edm::View<reco::CaloMET> > calometoldHandle;
@@ -479,7 +483,8 @@ CombinedNtupler::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
   calometold.sig	    = calometolditer.significance();
   calometold.sumEt   = calometolditer.sumEt();
   calometold.emf     = calometolditer.emEtFraction();
-
+  calometold.prob = TMath::Prob(calometold.sig,2);
+  
   //pfmet wthouth thresholds
   edm::Handle<edm::View<reco::MET> > pfmetoldHandle;
   iEvent.getByLabel(pfmetoldTag_,pfmetoldHandle);
@@ -490,7 +495,7 @@ CombinedNtupler::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
   pfmetold.sig       = pfmetolditer.significance();
   pfmetold.sumEt     = pfmetolditer.sumEt();
   pfmetold.emf       = -1.;
-
+  pfmetold.prob = TMath::Prob(pfmetold.sig,2);
 
   //t1 mets
  //  edm::Handle<edm::View<reco::CaloMET> > t1met05Handle;
